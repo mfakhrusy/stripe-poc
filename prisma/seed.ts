@@ -56,7 +56,7 @@ async function generateSupplierDummyData() {
       },
     },
   });
-};
+}
 
 const generateCustomerDummyData = async () => {
   await db.customer.createMany({
@@ -74,13 +74,13 @@ const generateCustomerDummyData = async () => {
         name: "Customer 3",
       },
     ],
-  })
-}
+  });
+};
 
 const seedCustomerData = async () => {
   await deleteAllCustomerDummyData();
   await generateCustomerDummyData();
-}
+};
 
 const seedSupplierData = async () => {
   await deleteAllSupplierDummyData();
