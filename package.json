@@ -13,6 +13,7 @@
     "start": "remix-serve build",
     "prisma:db:push": "prisma db push",
     "prisma:seed": "node --require esbuild-register prisma/seed.ts",
+    "prisma:generate": "prisma generate",
     "prettify": "prettier --write '**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css,scss,less,sass,graphql,gql}'"
   },
   "dependencies": {
