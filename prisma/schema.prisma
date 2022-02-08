@@ -11,11 +11,20 @@ datasource db {
 }
 
 model Customer {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  orders    Order[]
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  email             String   @unique
+  name              String?
+  orderPerCustomers OrderPerCustomer[]
+}
+
+model OrderPerCustomer {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  itemCount   Int
+  orders      Order[]
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  customerId  Int
 }
 
 enum OrderStatus {
@@ -26,13 +35,15 @@ enum OrderStatus {
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  status      OrderStatus
-  customer    Customer    @relation(fields: [customerId], references: [id])
-  customerId  Int
-  itemId      Int
-  itemCount   Int
+  id                  Int               @id @default(autoincrement())
+  serial              String            @db.VarChar(7) @unique
+  createdAt           DateTime          @default(now())
+  status              OrderStatus
+  itemGoal            Int
+  item                Item              @relation(fields: [itemId], references: [id])
+  itemId              Int
+  orderPerCustomer    OrderPerCustomer  @relation(fields: [orderPerCustomerId], references: [id])
+  orderPerCustomerId  Int
 }
 
 model Supplier {
@@ -44,11 +55,13 @@ model Supplier {
 }
 
 model Item {
-  id                  Int      @id @default(autoincrement())
-  createdAt           DateTime @default(now())
-  name                String
-  price_threshold     Int[]
-  price_per_threshold String[]  
-  supplier            Supplier @relation(fields: [supplierId], references: [id])
-  supplierId          Int
+  id                    Int      @id @default(autoincrement())
+  createdAt             DateTime @default(now())
+  name                  String
+  item_count_threshold  Int[]
+  price_per_threshold   Decimal[]  @db.Decimal(7, 2) // max 99999.99 
+  supplier              Supplier @relation(fields: [supplierId], references: [id])
+  supplierId            Int
+  imageURL              String?
+  orders                Order[]
 }

@@ -10,6 +10,14 @@ async function deleteAllCustomerDummyData() {
   await db.customer.deleteMany({});
 }
 
+async function deleteAllOrderData() {
+  await db.order.deleteMany({});
+}
+
+async function deleteAllOrderPerCustomerData() {
+  await db.orderPerCustomer.deleteMany({});
+}
+
 async function generateSupplierDummyData() {
   await db.supplier.create({
     data: {
@@ -19,14 +27,17 @@ async function generateSupplierDummyData() {
         createMany: {
           data: [
             {
-              name: "JD - Item 1",
-              price_threshold: [1, 10, 100],
-              price_per_threshold: ["20000", "18000", "16000"],
+              name: "Laptop",
+              item_count_threshold: [1, 10, 100],
+              price_per_threshold: [20000.2, 18000.1, 16000.1],
+              imageURL:
+                "https://stripe-poc-assets.s3.amazonaws.com/laptop-stretched.png",
             },
             {
-              name: "JD - Item 2",
-              price_threshold: [1, 10, 100],
-              price_per_threshold: ["2000", "1800", "1600"],
+              name: "Cup",
+              item_count_threshold: [1, 10, 100],
+              price_per_threshold: [2000, 1800, 1600],
+              imageURL: "https://stripe-poc-assets.s3.amazonaws.com/cup.png",
             },
           ],
         },
@@ -42,14 +53,16 @@ async function generateSupplierDummyData() {
         createMany: {
           data: [
             {
-              name: "AK - Item 1",
-              price_threshold: [1, 10, 100],
-              price_per_threshold: ["50000", "40000", "30000"],
+              name: "Ipad",
+              item_count_threshold: [1, 10, 100],
+              price_per_threshold: [50000, 40000, 30000],
+              imageURL: "https://stripe-poc-assets.s3.amazonaws.com/ipad.png",
             },
             {
-              name: "AK - Item 2",
-              price_threshold: [1, 10, 100],
-              price_per_threshold: ["3000", "2800", "2600"],
+              name: "Book",
+              item_count_threshold: [1, 10, 100],
+              price_per_threshold: [3000, 2800, 2600],
+              imageURL: "https://stripe-poc-assets.s3.amazonaws.com/book.png",
             },
           ],
         },
@@ -87,5 +100,15 @@ const seedSupplierData = async () => {
   await generateSupplierDummyData();
 };
 
-seedSupplierData();
-seedCustomerData();
+const removeOrderData = async () => {
+  await deleteAllOrderData();
+  await deleteAllOrderPerCustomerData();
+};
+
+const seedAllData = async () => {
+  await removeOrderData();
+  await seedSupplierData();
+  await seedCustomerData();
+};
+
+seedAllData();
